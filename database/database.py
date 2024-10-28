@@ -7,6 +7,7 @@ class Book(db.Model):
   title=db.Column(db.String,nullable=False)
   author=db.Column(db.String)
   description=db.Column(db.String)
+  img_url=db.Column(db.String)
   
   genre_id=db.Column(db.Integer,db.ForeignKey('genre.id'))
   genre=db.relationship('Genre', backref=db.backref('books', lazy=True))

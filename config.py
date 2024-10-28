@@ -2,3 +2,5 @@ class Config:
   SQLALCHEMY_DATABASE_URI = 'sqlite:///example.db'
   SQLALCHEMY_TRACK_MODIFICATIONS = False
   SECRET_KEY = 'FLASK_SQL_TEST'
+  UPLOAD_FOLDER='static/upload'
+  MAX_CONTENT_LENGTH = 16 * 1024 * 1024
