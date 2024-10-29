@@ -1,6 +1,6 @@
 <header>
 <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-    <a class="navbar-brand" href="/">Book storage</a>
+    <a class="navbar-brand" href="/"> <i class="fa fa-address-book-o" aria-hidden="true"></i> My Book storage</a>
     <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
         aria-expanded="false" aria-label="Toggle navigation"></button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
@@ -9,12 +9,12 @@
             <li class="nav-item 
             {{ 'active' if active_page=='books' else '' }}
             ">
-                <a class="nav-link" href="/Books">Books<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/Books"> <i class="fa fa-book" aria-hidden="true"></i>  Books<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item 
             {{ 'active' if active_page=='genres' else '' }}
             ">
-                <a class="nav-link" href="/Genres">Genres</a>
+                <a class="nav-link" href="/Genres"> <i class="fas fa-theater-masks    "></i> Genres</a>
             </li>
         </ul>
     </div>

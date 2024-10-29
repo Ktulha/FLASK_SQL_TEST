@@ -8,6 +8,7 @@ class Book(db.Model):
   author=db.Column(db.String)
   description=db.Column(db.String)
   img_url=db.Column(db.String)
+  is_read=db.Column(db.Boolean)
   
   genre_id=db.Column(db.Integer,db.ForeignKey('genre.id'))
   genre=db.relationship('Genre', backref=db.backref('books', lazy=True))
@@ -21,13 +22,13 @@ class Book(db.Model):
 class Genre(db.Model):
   id=db.Column(db.Integer,primary_key=True)
   name=db.Column(db.String,nullable=False)
-  # books=db.relationship('Book',backref='genre')
+  description=db.Column(db.String)
   
   def __repr__(self):
     return f"Genre:  {self.name}"
   
   def  json(self):
-    return {'id':self.id,'name':self.name}
+    return {'id':self.id,'name':self.name,'description':self.description,'books':[book.json() for book in self.books]}
   
 
 

@@ -1,8 +1,33 @@
 {% extends "components/base.html" %}
 
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <div class="alert alert-dismissible fade show" role="alert">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endwith %}
 <div class="row m-2">
-  
-<a name="create_book" id="create_book" class="btn btn-secondary" href="#" role="button"> <i class="fa fa-plus-circle fa-lg " aria-hidden="true"> </i>  Create new</a>
+  {% if flag=='create' %}
+  {% include "create_genre.html" %}
+{% else%}
+<a name="create_genre" id="create_genre" class="btn btn-secondary" href="/Genres/create" role="button"> <i class="fa fa-plus-circle fa-lg " aria-hidden="true"> </i>  Create new</a>
 </div>
+{% for genre in genres %}
+<div class="row col-sm-1-12 m-4">
+  <span>
+{{ genre.name}} 
+        <span class="badge badge-primary badge-pill">{{ genre.book_count }}</span>
+  </span>
+</div>
+{% endfor %}
+
+
+{% endif %}
+  
+
+
 {%  endblock %}
