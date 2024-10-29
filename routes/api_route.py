@@ -30,7 +30,7 @@ def create_book():
     new_book = Book(
         title=data['title'],
         author=data['author'],
-        description=data['description']
+        description=data['description'],
         genre_id=data['genre_id']
     )
     db.session.add(new_book)
