@@ -3,13 +3,21 @@
 
 
 {%block title%}
-Flask app
+My Book Storage
 {% endblock %}
 
 {% block content %}
 
 {% if books %}
-
+<div class="row m-2 ">
+  {% for book in books %}
+  
+  {% include "components/book_view.html" %}
+  
+  
+  
+  {% endfor %}
+  </div>
 {% endif %}
 
 {% if genres %}
