@@ -1,8 +1,22 @@
 
+
+import os
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from sqlalchemy import desc, func
+from werkzeug.utils import secure_filename
+from config  import Config
 
 from database.database import Book, Genre,db
+
+UPLOAD_FOLDER=Config.UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+def check_filename(filename):
+  print(filename)
+  return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def secure_file(filename):
+  return secure_filename(filename)
 
 user_route=Blueprint('user_route',__name__,template_folder='../templates/')
 
@@ -28,8 +42,24 @@ def get_genres():
 @user_route.route('/Books/create',methods=['GET','POST'])
 def create_book():
   if request.method == 'POST':
-    print("Form submitted!")  # Debugging line
-    print(request.form)  # Print the entire form data
+    file_path=''
+    if 'image' in request.files:
+      print(f"got image")
+      file = request.files['image']
+      if file and check_filename(file.filename):
+        print(f"Uploading file: {file.filename}")
+        file_path = os.path.join(UPLOAD_FOLDER, secure_file(file.filename))
+        print(f"Attempting to save file to: {file_path}")
+        try:
+          file.save(file_path)
+          print(f"File saved to: {file_path}")
+        except Exception as e:
+          flash(f'An error occurred while saving the file: {str(e)}', 'danger')
+          return redirect(request.url)
+      else:
+          flash('Invalid file', 'danger')
+          return redirect(request.url)
+
     title = request.form.get('title')
     author = request.form.get('author')
     description=request.form.get('description')
@@ -38,11 +68,17 @@ def create_book():
       title=title,
       author=author,
       description=description,
-      genre_id=genre_id
+      genre_id=genre_id,
+      img_url=file_path
       )
-    print(title,author,description,genre_id)
+
     db.session.add(new_book)
-    db.session.commit()
+    try:
+      db.session.commit()
+    except Exception as e:
+      db.session.rollback()
+      flash('An error occurred while saving to the database.', 'danger')
+      return redirect(request.url)
     
     flash('New book created!','success')
     return  redirect(url_for('user_route.get_books'))

@@ -17,7 +17,7 @@ class Book(db.Model):
     return f"Book('{self.title}', '{self.author}')"
   
   def json(self):
-    return {'id': self.id, 'title': self.title, 'author': self.author, 'genre': self.genre.name, 'description': self.description}
+    return {'id': self.id, 'title': self.title, 'author': self.author, 'genre': self.genre.name, 'description': self.description,'img_url':self.img_url}
 
 class Genre(db.Model):
   id=db.Column(db.Integer,primary_key=True)
