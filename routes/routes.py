@@ -4,7 +4,8 @@ from routes.api_route import api_route
 from routes.user_route import user_route
 
 
-app=Flask(__name__)
+app=Flask(__name__,static_folder='../static',template_folder='../templates')
+
 app.config.from_object('config.Config')
 db.init_app(app)
 

@@ -18,7 +18,33 @@ def check_filename(filename):
 def secure_file(filename):
   return secure_filename(filename)
 
-user_route=Blueprint('user_route',__name__,template_folder='../templates/')
+
+def file_saver(request):
+  filename=''
+  if 'image' in request.files:
+    print(f"got image")
+    file = request.files['image']
+    if file and check_filename(file.filename):
+      print(f"Uploading file: {file.filename}")
+      filename=secure_file(file.filename)
+      file_path = os.path.join(UPLOAD_FOLDER, filename)
+        
+      print(f"Attempting to save file to: {file_path}")
+      try:
+        file.save(file_path)
+        print(f"File saved to: {file_path}")
+      except Exception as e:
+        flash(f'An error occurred while saving the file: {str(e)}', 'danger')
+        return redirect(request.url)
+    else:
+        flash('Invalid file', 'danger')
+        return redirect(request.url)
+    return  filename
+
+  
+
+
+user_route=Blueprint('user_route',__name__)#,template_folder='../templates', static_folder='../static' )
 
 @user_route.route("/")
 def index():
@@ -39,37 +65,23 @@ def get_genres():
 ).outerjoin(Book).group_by(Genre.id, Genre.name).all()
   return render_template('Genres.html', genres=genres,active_page='genres')
 
+
 @user_route.route('/Books/create',methods=['GET','POST'])
 def create_book():
   if request.method == 'POST':
-    file_path=''
-    if 'image' in request.files:
-      print(f"got image")
-      file = request.files['image']
-      if file and check_filename(file.filename):
-        print(f"Uploading file: {file.filename}")
-        file_path = os.path.join(UPLOAD_FOLDER, secure_file(file.filename))
-        print(f"Attempting to save file to: {file_path}")
-        try:
-          file.save(file_path)
-          print(f"File saved to: {file_path}")
-        except Exception as e:
-          flash(f'An error occurred while saving the file: {str(e)}', 'danger')
-          return redirect(request.url)
-      else:
-          flash('Invalid file', 'danger')
-          return redirect(request.url)
-
+    filename=file_saver(request)
     title = request.form.get('title')
     author = request.form.get('author')
     description=request.form.get('description')
     genre_id = request.form.get('genre')
+    img_url=url_for('static', filename='uploads/' + filename)
+    
     new_book=Book(
       title=title,
       author=author,
       description=description,
       genre_id=genre_id,
-      img_url=file_path
+      img_url=img_url
       )
 
     db.session.add(new_book)
@@ -83,7 +95,28 @@ def create_book():
     flash('New book created!','success')
     return  redirect(url_for('user_route.get_books'))
   genres=Genre.query.all()
-  return  render_template('Books.html',genres=genres,active_page='books',flag='create')
+  return  render_template('Books.html',genres=genres,active_page='books',flag='create',method='POST')
+
+@user_route.route('/Books/edit/<int:id>',methods=['GET','PUT'])
+def edit_book(id):
+  book=Book.query.get(id)
+  if book is None:
+    flash('Book not found', 'danger')
+    return redirect(url_for('user_route.get_books'))  
+  
+  if request.method=='PUT':
+    filename=file_saver(request)
+    book.title = request.form.get('title')
+    book.author = request.form.get('author')
+    book.description=request.form.get('description')
+    book.genre_id = request.form.get('genre')
+    book.img_url=url_for('static', filename='uploads/' + filename)
+  
+  
+  
+  genres=Genre.query.all()
+  return render_template('Books.html',genres=genres, book=book, active_page='books',flag='edit', method='PUT')
+
 
 @user_route.route('/Genres/create',methods=['GET','POST'])
 def create_genre():

@@ -1,57 +1,55 @@
-<div class="container">
 
-  <div class="row">
-    <h3 class="col-sm-1-12  p-2 mb-4 shadow-sm">Create new book record</h3>
-  </div>
 
-  <form method="POST" action="{{ url_for('user_route.create_book') }}" enctype="multipart/form-data">
+  <form method="{{method}}" action="{{ url_for('user_route.create_book') }}" enctype="multipart/form-data">
     <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" class="form-control" id="title" name="title" required>
+        <input type="text" class="form-control" id="title" name="title" required value="{{ book.title }}" >
     </div>
     <div class="form-group">
         <label for="author">Author</label>
-        <input type="text" class="form-control" id="author" name="author" required>
+        <input type="text" class="form-control" id="author" name="author" value="{{ book.author }}" required>
     </div>
     <div class="form-group">
         <label for="image">Image</label>
         <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)" >
-        <img id="imagePreview" src="" alt="Image Preview" style="display:none; margin-top: 10px; max-width: 100%; height: auto;">
+        <img id="imagePreview" src="{{ book.img_url }}" alt="Image Preview" style=" {% if flag=='create' %}display:none;{% endif %}  margin-top: 10px; max-width: 100%; height: auto;">
     </div>
     <div class="form-group">
         <label for="description">Description</label>
-        <textarea class="form-control" id="description" name="description" ></textarea>
+        <textarea class="form-control" id="description" name="description"value="{{ book.description }}" ></textarea>
     </div>
     <div class="form-group">
         <label for="genre_id">Genre ID</label>
        <!--<input type="text" class="form-control" id="genre_id" name="genre_id" required>-->
-       <select class="form-select" id="genre" name="genre">
-        <option value="" disabled selected>Select genre</option>
+       <select class="form-select" id="genre" name="genre" value="{{ book.genre_id }}" >
+        <option value="" disabled selected={{ flag=='create'}}>Select genre</option>
         {% for genre in genres %}
-        <option value="{{ genre.id }}">{{ genre.name }}</option>
+        <option value="{{ genre.id }}" selected= {{ book.genre_id == genre.id }}>{{ genre.name }}</option>
+
         {% endfor %}
 
     </select>
     </div>
     <button type="submit" class="btn btn-primary">Create Book</button>
+    {% if flag=='edit' %}
+    <button type="button" class="btn btn-danger">Delete Book</button>
+    {% endif %}
     <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
 </form>
 
 <script>
     function previewImage(event) {
-        const file = event.target.files[0]; // Get the selected file
-        const reader = new FileReader(); // Create a FileReader object
+        const file = event.target.files[0]; 
+        const reader = new FileReader(); 
     
         reader.onload = function() {
-            const imagePreview = document.getElementById('imagePreview'); // Get the image preview element
-            imagePreview.src = reader.result; // Set the src to the result of FileReader
-            imagePreview.style.display = 'block'; // Make the image visible
+            const imagePreview = document.getElementById('imagePreview'); 
+            imagePreview.src = reader.result; 
+            imagePreview.style.display = 'block';
         };
     
         if (file) {
-            reader.readAsDataURL(file); // Read the file as a data URL
+            reader.readAsDataURL(file); 
         }
     }
     </script>
-
-</div>
