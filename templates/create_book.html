@@ -1,36 +1,36 @@
 
-
+<!--TODO: split code  into create and edit templates-->
   <form method="{{method}}" action="{{ url_for('user_route.create_book') }}" enctype="multipart/form-data">
     <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" class="form-control" id="title" name="title" required value="{{ book.title }}" >
+        <input type="text" class="form-control" id="title" name="title" required value=" {% if book %}{{  book.title }} {% endif %} " >
     </div>
     <div class="form-group">
         <label for="author">Author</label>
-        <input type="text" class="form-control" id="author" name="author" value="{{ book.author }}" required>
+        <input type="text" class="form-control" id="author" name="author" value="{% if book %}{{ book.author }}{% endif %}" required>
     </div>
     <div class="form-group">
         <label for="image">Image</label>
         <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)" >
-        <img id="imagePreview" src="{{ book.img_url }}" alt="Image Preview" style=" {% if flag=='create' %}display:none;{% endif %}  margin-top: 10px; max-width: 100%; height: auto;">
+        <img id="imagePreview" src="{% if book %}{{ book.img_url }}{% endif %}" alt="Image Preview" style=" {% if flag=='create' %}display:none;{% endif %}  margin-top: 10px; max-width: 100%; height: auto;">
     </div>
     <div class="form-group">
         <label for="description">Description</label>
-        <textarea class="form-control" id="description" name="description">{{ book.description }}</textarea>
+        <textarea class="form-control" id="description" name="description">{% if book %}{{ book.description }}{% endif %}</textarea>
     </div>
     <div class="form-group">
         <label for="genre_id">Genre ID</label>
       
-       <select class="form-select" id="genre" name="genre" value="{{ book.genre_id }}" >
+       <select class="form-select" id="genre" name="genre" value="{% if book %}{{ book.genre_id }}{% endif %}" >
         <option value="" disabled selected={{ flag=='create'}}>Select genre</option>
         {% for genre in genres %}
-        <option value="{{ genre.id }}" {% if book.genre_id == genre.id %}selected{% endif %}>{{ genre.name }}</option>
+        <option value="{{ genre.id }}"{% if book %} {% if book.genre_id == genre.id %}selected{% endif %}{% endif %}>{{ genre.name }}</option>
 
         {% endfor %}
 
     </select>
     </div>
-    <button type="submit" class="btn btn-primary">Create Book</button>
+    <button type="submit" class="btn btn-primary">Save Book</button>
     {% if flag=='edit' %}
     <button type="button" class="btn btn-danger" onclick="deleteBook({{ book.id }})">Delete Book</button>
     {% endif %}

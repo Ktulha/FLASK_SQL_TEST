@@ -17,7 +17,7 @@
  <!--    <div class="card-body"> -->
       <p class="card-text bg-light flex-grow-1 text-info m-3">{{ book.description }}</p>
       <div class="row justify-content-around m-1 mb-3 ">   
-        <button type="button" class="btn btn-primary">Edit</button>
+        <a type="button" href="/Books/edit/{{ book.id }}" class="btn btn-primary">Edit</a>
         <button type="submit" class="btn btn-primary" id="{{book.id}}_save_btn" disabled onclick="toggleRead({{ book.id }})" >Save</button>
       </div>
 

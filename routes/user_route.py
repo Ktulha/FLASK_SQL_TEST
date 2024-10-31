@@ -104,7 +104,7 @@ def edit_book(id):
   if book is None:
     flash('Book not found', 'danger')
     return redirect(url_for('user_route.get_books'))  
-  
+  print(book.id)
   if request.method=='PUT':
     filename=file_saver(request)
     book.title = request.form.get('title')
@@ -112,6 +112,8 @@ def edit_book(id):
     book.description=request.form.get('description')
     book.genre_id = request.form.get('genre')
     book.img_url=url_for('static', filename='uploads/' + filename)
+    db.session.commit()
+    return redirect(url_for('user_route.get_books')) 
   
   
   
