@@ -14,11 +14,41 @@
 </head>
 <body>
   {% include "components/header.html" %}
-<div class="container">
+<!--<div class="container"> -->
   {%  block content %}{% endblock content %}
- </div>
+ <!--</div>-->
 
 {% include  "components/footer.html" %}
+
+<script>
+  function toggleRead(bookId) {
+    console.log('buttotn')
+      
+          fetch(`/api/v1/toggle_read/${bookId}`, {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+                  // Add any necessary authentication headers here
+              }
+          })
+          .then(response => {
+              if (response.ok) {
+                  alert("Read mark saved.");
+                  // Optionally, redirect or refresh the page
+                  window.location.href = "/"; 
+              } else {
+                  alert("Failed to save the read mark. Please try again.");
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+              alert("An error occurred while trying to update the book.");
+          });
+      
+  }
+</script>
+
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -1,0 +1,36 @@
+<table class="table table-responsive  m-4 ">
+  <thead class="thead-inverse">
+    <tr class="bg-primary">
+      <th>Id</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Genre</th>
+      <th>Image</th>
+      <th>Description</th>
+      <th>Is read</th>
+    </tr>
+    </thead>
+    <tbody>
+{% for book in books %}
+<tr >
+
+  <td> {{ book.id }} </td>
+  <td> {{ book.title }} </td> 
+  <td> {{ book.author }} </td> 
+  <td> {{ book.genre.name }} </td> 
+  <td> <img src="{{ book.img_url }}" class=" sm-img img-thumbnail " alt="{{ book.title }} image"> </td> 
+  <td> {{ book.description }} </td>
+  <td> {{ book.is_read }} </td> 
+</tr>
+{% endfor %}
+    </tbody>
+</table>
+<style>
+  .table tbody tr:hover {
+      background: #B6BFEBFF;
+      transition: 1s
+  }
+  .sm-img {
+    height:150px
+  }
+  </style>

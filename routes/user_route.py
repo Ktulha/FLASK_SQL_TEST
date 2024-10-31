@@ -58,11 +58,12 @@ def get_books():
 
 @user_route.route('/Genres')
 def get_genres():
-  genres = db.session.query(
-    Genre.id,
-    Genre.name,
-    func.count(Book.id).label('book_count') 
-).outerjoin(Book).group_by(Genre.id, Genre.name).all()
+#   genres = db.session.query(
+#     Genre.id,
+#     Genre.name,
+#     func.count(Book.id).label('book_count') 
+# ).outerjoin(Book).group_by(Genre.id, Genre.name).all()
+  genres=Genre.query.all()
   return render_template('Genres.html', genres=genres,active_page='genres')
 
 

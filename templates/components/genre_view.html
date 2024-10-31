@@ -1,0 +1,40 @@
+<div id="accordianId" role="tablist" aria-multiselectable="true">
+  {% for genre in genres %}
+  <div class="card">
+    <div class="card-header" role="tab" id="section{{ genre.id }}HeaderId">
+      <h5 class="mb-0">
+        <a data-toggle="collapse" data-parent="#accordianId" href="#section{{ genre.id }}ContentId" aria-expanded="true" aria-controls="section{{ genre.id }}ContentId">
+          {{ genre.name }} 
+
+        </a>
+      </h5>
+    </div>
+    <div id="section1ContentId" class="collapse in" role="tabpanel" aria-labelledby="section{{ genre.id }}HeaderId">
+      <div class="card-body">
+        {{ genre.description }} 
+        <div class="row m-2">
+        <div class="container-fluid">
+        {% for book in genre.books %}
+        {% include 'components/book_view.html' %}
+        {% endfor %}
+      </div>
+    </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <div class="card">
+    <div class="card-header" role="tab" id="section2HeaderId">
+      <h5 class="mb-0">
+        <a data-toggle="collapse" data-parent="#accordianId" href="#section2ContentId" aria-expanded="true" aria-controls="section2ContentId">
+          Section 2
+        </a>
+      </h5>
+    </div>
+    <div id="section2ContentId" class="collapse in" role="tabpanel" aria-labelledby="section2HeaderId">
+      <div class="card-body">
+        Section 2 content
+      </div>
+    </div>
+  </div>
+</div>

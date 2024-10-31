@@ -36,4 +36,13 @@ def create_book():
     db.session.add(new_book)
     db.session.commit()
     return jsonify(new_book.to_dict()), 201
-  
+
+@api_route.route('toggle_read/<int:id>',methods=['PUT'])
+def toggle_read(id: int):
+    print('Toggle')
+    book = Book.query.get_or_404(id)
+    book.is_read = not book.is_read
+    db.session.commit()
+    return jsonify({'message': 'Book read status toggled'}), 200
+
+ 

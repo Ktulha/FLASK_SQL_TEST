@@ -16,14 +16,9 @@
 {% else%}
 <a name="create_genre" id="create_genre" class="btn btn-secondary" href="/Genres/create" role="button"> <i class="fa fa-plus-circle fa-lg " aria-hidden="true"> </i>  Create new</a>
 </div>
-{% for genre in genres %}
-<div class="row col-sm-1-12 m-4">
-  <span>
-{{ genre.name}} 
-        <span class="badge badge-primary badge-pill">{{ genre.book_count }}</span>
-  </span>
-</div>
-{% endfor %}
+{% if genres %}
+{% include 'components/genre_view.html'%}
+{% endif %}
 
 
 {% endif %}
