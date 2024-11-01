@@ -41,7 +41,7 @@ def create_book():
 def toggle_read(id: int):
     print('Toggle')
     book = Book.query.get_or_404(id)
-    book.is_read = not book.is_read
+    book.is_read = request.json.get
     db.session.commit()
     return jsonify({'message': 'Book read status toggled'}), 200
 

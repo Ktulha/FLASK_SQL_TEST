@@ -17,7 +17,12 @@
   <td> {{ book.id }} </td>
   <td> {{ book.title }} </td> 
   <td> {{ book.author }} </td> 
-  <td> {{ book.genre.name }} </td> 
+  <td>
+    <div class="mb-1 row justify-content-around">
+    <a href="/Genres#section{{ book.genre_id }}ContentId"> <span class="badge badge-info mb-2 mw">{{ book.genre.name }}</span></a>
+   <div> 
+    
+   </td> 
   <td> <img src="{{ book.img_url }}" class=" sm-img img-thumbnail " alt="{{ book.title }} image"> </td> 
   <td> {{ book.description }} </td>
   <td> {{ book.is_read }} </td> 

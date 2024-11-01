@@ -12,12 +12,14 @@
 {% endwith %}
 <div class="row m-2">
   {% if flag=='create' %}
-  {% include "create_genre.html" %}
+  {% include "components/create_genre.html" %}
 {% else%}
 <a name="create_genre" id="create_genre" class="btn btn-secondary" href="/Genres/create" role="button"> <i class="fa fa-plus-circle fa-lg " aria-hidden="true"> </i>  Create new</a>
 </div>
 {% if genres %}
+<div class="container">
 {% include 'components/genre_view.html'%}
+</div>
 {% endif %}
 
 

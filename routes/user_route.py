@@ -19,7 +19,7 @@ def secure_file(filename):
   return secure_filename(filename)
 
 
-def file_saver(request):
+def file_saver(request)->str:
   filename=''
   if 'image' in request.files:
     print(f"got image")
@@ -39,7 +39,7 @@ def file_saver(request):
     else:
         flash('Invalid file', 'danger')
         return redirect(request.url)
-    return  filename
+  return  filename
 
   
 
@@ -70,12 +70,12 @@ def get_genres():
 @user_route.route('/Books/create',methods=['GET','POST'])
 def create_book():
   if request.method == 'POST':
-    filename=file_saver(request)
+    file_name=file_saver(request)
     title = request.form.get('title')
     author = request.form.get('author')
     description=request.form.get('description')
     genre_id = request.form.get('genre')
-    img_url=url_for('static', filename='uploads/' + filename)
+    img_url=url_for('static', filename='uploads/' + file_name)
     
     new_book=Book(
       title=title,
@@ -98,22 +98,27 @@ def create_book():
   genres=Genre.query.all()
   return  render_template('Books.html',genres=genres,active_page='books',flag='create',method='POST')
 
-@user_route.route('/Books/edit/<int:id>',methods=['GET','PUT'])
+@user_route.route('/Books/edit/<int:id>',methods=['GET','POST'])
 def edit_book(id):
   book=Book.query.get(id)
   if book is None:
     flash('Book not found', 'danger')
     return redirect(url_for('user_route.get_books'))  
   print(book.id)
-  if request.method=='PUT':
-    filename=file_saver(request)
+  print(request.method)
+  if request.method=='POST':
+    print(request)
+    if request.files['image']:
+      file_name=file_saver(request)
+      img_url=url_for('static', filename=('uploads/' + file_name))
+      book.img_url=img_url
     book.title = request.form.get('title')
     book.author = request.form.get('author')
     book.description=request.form.get('description')
     book.genre_id = request.form.get('genre')
-    book.img_url=url_for('static', filename='uploads/' + filename)
+    
     db.session.commit()
-    return redirect(url_for('user_route.get_books')) 
+    return redirect(url_for('user_route.index')) 
   
   
   

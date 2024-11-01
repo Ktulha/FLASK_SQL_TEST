@@ -3,10 +3,10 @@
 
     <div class="card-body">
       <div class="mb-1 row justify-content-around">
-        <span class="badge badge-info mb-2 mw">{{ book.genre.name }}</span>
+         <a href="/Genres#section{{ book.genre_id }}ContentId"> <span class="badge badge-info mb-2 mw">{{ book.genre.name }}</span></a>
         <div>
           <label for="{{book.id}}_is_read">Is read:</label>
-          <input type="checkbox" name="is_read" id="{{book.id}}_is_read" {% if book.is_read %}checked{% endif %} onclick="document.getElementById('{{book.id}}_save_btn').disabled=false">
+          <input type="checkbox" name="is_read" id="{{book.id}}_is_read" {% if book.is_read %}checked{% endif %} onclick="document.getElementById('{{book.id}}_save_btn').disabled = !document.getElementById('{{book.id}}_save_btn').disabled;">
         </div>
       </div>
       <h4 class="card-title text-center shadow bg-primary rounded text-white pr-4 pl-4 p-2">{{ book.title }}</h4>
